@@ -9,6 +9,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -60,6 +62,23 @@ public class User extends BaseEntity/* implements Auditable */{    // 상속. �
 
     @Enumerated(value = EnumType.STRING)    // 0, 1 로 저장 되지 않고 String 자체로 저장하게 설정
     private Gender gender;
+
+    // User: UserHistory = 1:N
+    @OneToMany(fetch = FetchType.EAGER) // 부모를 읽을 때 자식 Entity도 같이 읽어오게!
+    @JoinColumn(name = "user_id"     // Entity 가 어떤 컬럼으로 join 하게 될지 지정해준다.
+                // name = "user_id"     : join 할 컬럼명 지정가능!
+                //  UserHistory 의 user_id 란 컬럼으로 join       근데 user_id는 이미 존재한다... =>   그래서 UserHistory 의 userId에 @Column(name = "user_id") 생성해 1:N 완성!
+                , insertable = false, updatable = false
+                    // User 에서 userHistory 값을 추가, 수정하지 못하도록 한다.
+    )
+    private List<UserHistory> userHistories = new ArrayList<>();    // NPE 방지! 없으면 새로운 배열
+
+
+    // User:Review = 1:N
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    @ToString.Exclude
+    private List<Review> reviews = new ArrayList<>();
 
 //    @PrePersist // user entity 가 insert 되기 전에 호출됨!
 //    public void prePersist() {

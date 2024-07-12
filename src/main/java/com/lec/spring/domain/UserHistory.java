@@ -27,9 +27,14 @@ public class UserHistory extends BaseEntity /*implements Auditable*/ {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;    // UserHistory 의 id
 
-    private Long userId;    // User 의 id
+//    @Column(name = "user_id", insertable = false, updatable = false)
+//    private Long userId;    // User 의 id  아래 @ManyToOne 해서 필요 X
     private String name;    // User 의 name
     private String email;   // User 의 email
+
+    @ManyToOne
+    @ToString.Exclude
+    private User user;
 
 //    @CreatedDate
 //    private LocalDateTime createdAt;

@@ -4,8 +4,8 @@ import com.lec.spring.domain.User;
 import com.lec.spring.domain.UserHistory;
 import com.lec.spring.repository.UserHistoryRepository;
 import com.lec.spring.support.BeanUtils;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
+import jakarta.persistence.PostPersist;
+import jakarta.persistence.PostUpdate;
 
 // ★ Entity Listener 는 Spring Bean 을 주입 받지 못.한.다!   => Autowired 해도 userHistoryRepository가 null
 //@Component
@@ -19,10 +19,10 @@ public class UserEntityListener {
 //        this.userHistoryRepository = userHistoryRepository; // 추천~
 //    }
 
-    @PreUpdate
-    @PrePersist // 복수 가능
-    public void prePersistAndpreUpdate(Object o) {
-        System.out.println(">> UserEntityListener#prePersistAndpreUpdate()");
+    @PostUpdate
+    @PostPersist // 복수 가능
+    public void addUserHistory(Object o) {
+        System.out.println(">> UserEntityListener#addUserHistory()");
 
         // 스프링 bean 객체 주입 받기
         UserHistoryRepository userHistoryRepository = BeanUtils.getBean(UserHistoryRepository.class);
@@ -30,9 +30,10 @@ public class UserEntityListener {
         User user = (User) o;
         // UserHistory 에 UPDATE 될 User 정보를 담아서 저장 (INSERT)
         UserHistory userHistory = new UserHistory();
-        userHistory.setUserId(user.getId());
+//        userHistory.setUserId(user.getId());
         userHistory.setName(user.getName());
         userHistory.setEmail(user.getEmail());
+        userHistory.setUser(user);
 
         userHistoryRepository.save(userHistory);    // INSERT
     }
