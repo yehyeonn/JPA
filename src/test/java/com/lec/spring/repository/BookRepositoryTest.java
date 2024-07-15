@@ -1,10 +1,14 @@
 package com.lec.spring.repository;
 
 import com.lec.spring.domain.*;
+import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,9 +26,6 @@ class BookRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
-
-
-
 
     @Test
     void bookTest() {
@@ -98,6 +99,63 @@ class BookRepositoryTest {
         givenReview(givenUser(), givenBook(givenPublisher()));
     }
 
+    // -----------------------------------------------------
+    // 커스텀 쿼리
+    @Test
+    void queryTest1() {
+        System.out.println("findByCategoryIsNullAndNameEqualsAndCreatedAtGreaterThanEqualAndUpdatedAtGreaterThanEqual() : ");
+        System.out.println(bookRepository.findByCategoryIsNullAndNameEqualsAndCreatedAtGreaterThanEqualAndUpdatedAtGreaterThanEqual(
+                "JPA 완전정복",
+                LocalDateTime.now().minusDays(1L),
+                LocalDateTime.now().minusDays(1L)
+        ));
+    }
 
+    @Test
+    void queryTest2(){
+        System.out.println("findByNameRecently : " +
+                bookRepository.findByNameRecently(
+                        "JPA 완전정복",
+                        LocalDateTime.now().minusDays(1L),
+                        LocalDateTime.now().minusDays(1L)
+                        ));
+    }
 
+    @Test
+    void queryTest3(){
+        System.out.println("findByNameRecently : " +
+                bookRepository.findByNameRecently2(
+                        "JPA 완전정복",
+                        LocalDateTime.now().minusDays(1L),
+                        LocalDateTime.now().minusDays(1L)
+                ));
+    }
+
+    @Test
+    void queryTest4(){
+        bookRepository.findBookNameAndCategory1().forEach(tuple -> {
+            System.out.println(tuple.get(0) + " : " + tuple.get(1));
+        });
+    }
+
+    @Test
+    void queryTest5() {
+        bookRepository.findBookNameAndCategory2().forEach(b -> {
+            System.out.println(b.getName() + " : " + b.getCategory());
+        });
+    }
+
+    @Test
+    void queryTest6() {
+        bookRepository.findBookNameAndCategory3().forEach(b -> {
+            System.out.println(b.getName() + " : " + b.getCategory());
+        });
+    }
+
+    @Test
+    void queryTest7() {
+        bookRepository.findBookNameAndCategory4(PageRequest.of(0, 1)).forEach(b -> {
+            System.out.println(b.getName() + " : " + b.getCategory());
+        });
+    }
 }
