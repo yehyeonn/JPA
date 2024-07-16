@@ -29,14 +29,16 @@ public interface BookRepository extends JpaRepository<Book, Long> { // Long 은 
     @Query(value = """
     select b from Book b
     where name = ?1 and createdAt >= ?2 and updatedAt >= ?3 and category is null
-""")    // name, createdAt 등은 컬럼명 아니다! 그러나 지양
+""")
+    // name, createdAt 등은 컬럼명 아니다! 그러나 지양
     List<Book> findByNameRecently(String name, LocalDateTime createdAt, LocalDateTime updatedAt);
 
     // named parameter 사용
     @Query(value = """
     select b from Book b
     where name = :name and createdAt >= :createdAt and updatedAt >= :updatedAt and category is null
-""")    // name, createdAt 등은 컬럼명 아니다!
+""")
+    // name, createdAt 등은 컬럼명 아니다!
     List<Book> findByNameRecently2(
             @Param("name") String name,
             @Param("createdAt") LocalDateTime createdAt,
@@ -65,7 +67,8 @@ public interface BookRepository extends JpaRepository<Book, Long> { // Long 은 
     Page<BookNameAndCategory2> findBookNameAndCategory4(Pageable pageable);
 
     // Native Query
-    @Query(value = "select * from book", nativeQuery = true)    // 여기서 book 은 테이블 명이 아닌 Entity, 그러나 nativeQuery = true 를 설정하면 value 그대로 출력됨!
+    @Query(value = "select * from book", nativeQuery = true)
+    // 여기서 book 은 테이블 명이 아닌 Entity, 그러나 nativeQuery = true 를 설정하면 value 그대로 출력됨!
     List<Book> findAllCustom1();
 
     @Transactional  // update, delete, insert 수행하는 native query 에 꼭 필요!
@@ -84,6 +87,6 @@ public interface BookRepository extends JpaRepository<Book, Long> { // Long 은 
     // 가장 마지막에 저장된 book 정보만 읽어오기
     @Query(value = "select * from book order by id desc limit 1", nativeQuery = true)
     Map<String, Object> findRowRecord();
-    }
+}
 
 

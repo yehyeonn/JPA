@@ -96,6 +96,7 @@ public class Book extends BaseEntity /*implements Auditable*/ {      // 상속. 
 
     // Entity 가 아닌 BookStatus 타입으로 선언!(Book 에 메소드 만들어둠)
 //    @Convert(converter = BookStatusConverter.class) // 어떠한 Converter 를 적용할지 명시
+
     private BookStatus status;
 
 }
