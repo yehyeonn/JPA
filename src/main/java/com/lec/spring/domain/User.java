@@ -118,30 +118,4 @@ public class User extends BaseEntity/* implements Auditable */{    // 상속. �
 //        System.out.println(">>> postLoad");
 //    }
         // MyEntityListener 에서 사용할 거양
-
-    // Embedded 예제
-    // Embedded 없이 주소 다루기
-//    private String city;
-//    private String district;
-//    private String detail;
-//    private String zipCode;
-
-    @Embedded // Embeddable 클래스임을 명시
-    @AttributeOverrides({
-            @AttributeOverride(name = "city", column = @Column(name = "home_city")),
-            @AttributeOverride(name = "district", column = @Column(name = "home_distirct")),
-            @AttributeOverride(name = "detail", column = @Column(name = "home_address_detail")),
-            @AttributeOverride(name = "zipCode", column = @Column(name = "home_zip_code")),
-            // 해당 이름을 가진 컬럼의 이름을 home_ 로 변경해 입력(같은 컬럼에 여러 개의 값이 입력됨을 방지)
-    })
-    private Address homeAddress;
-
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "city", column = @Column(name = "company_city")),
-            @AttributeOverride(name = "district", column = @Column(name = "company_distirct")),
-            @AttributeOverride(name = "detail", column = @Column(name = "company_address_detail")),
-            @AttributeOverride(name = "zipCode", column = @Column(name = "company_zip_code")),
-    })
-    private Address companyAddress;
 }

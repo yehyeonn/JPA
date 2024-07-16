@@ -7,14 +7,11 @@ import jakarta.persistence.Tuple;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 public interface BookRepository extends JpaRepository<Book, Long> { // Long 은 @Id 타입
     // 다음과 같은 쿼리 메소드를 만들어 보자
@@ -45,10 +42,10 @@ public interface BookRepository extends JpaRepository<Book, Long> { // Long 은 
     @Query(value = """
     select b.name as name, b.category as category from Book b
 """)
-    List<Tuple> findBookNameAndCategory1(); // Tuple 자리는 Entity 아닌 자바 객체
+    List<Tuple> findBookNameAndCategory1();
 
     @Query(value = "select b.name as name, b.category as category from Book b")
-    List<BookNameAndCategory1> findBookNameAndCategory2();  // 여기도 자바객체
+    List<BookNameAndCategory1> findBookNameAndCategory2();
 
     @Query(value = """
     select
@@ -63,27 +60,6 @@ public interface BookRepository extends JpaRepository<Book, Long> { // Long 은 
     from Book b
 """)
     Page<BookNameAndCategory2> findBookNameAndCategory4(Pageable pageable);
-
-    // Native Query
-    @Query(value = "select * from book", nativeQuery = true)    // 여기서 book 은 테이블 명이 아닌 Entity, 그러나 nativeQuery = true 를 설정하면 value 그대로 출력됨!
-    List<Book> findAllCustom1();
-
-    @Transactional  // update, delete, insert 수행하는 native query 에 꼭 필요!
-    @Modifying
-    @Query(value = "update book set category = 'IT전문서'", nativeQuery = true)
-    int updateCategories();
-    // DML 의 경우 리턴타입이 void, int, long 일수 있다.
-    // int 나 long 리턴하게 되면 affected row 를 받게 된다.
-
-    // native query 로 JPA 에 없는 쿼리하기
-    @Query(value = "show tables", nativeQuery = true)
-    List<String> showTables();
-
-    // Converter
-    // 실제 변환되어 저장되는 status 값 확인을 위한 native query 생성
-    // 가장 마지막에 저장된 book 정보만 읽어오기
-    @Query(value = "select * from book order by id desc limit 1", nativeQuery = true)
-    Map<String, Object> findRowRecord();
-
 }
+
 

@@ -1,7 +1,6 @@
 package com.lec.spring.repository;
 
 import com.lec.spring.domain.*;
-import com.lec.spring.repository.dto.BookStatus;
 import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -160,63 +158,4 @@ class BookRepositoryTest {
             System.out.println(b.getName() + " : " + b.getCategory());
         });
     }
-
-    @Test
-    void nativeQueryTest1() {
-        System.out.println("✨".repeat(30));
-        bookRepository.findAll().forEach(System.out::println);
-        System.out.println("😀".repeat(30));
-        bookRepository.findAllCustom1().forEach(System.out::println);
-    }
-
-    @Test
-    void nativeQueryTest2(){
-        List<Book> books = bookRepository.findAll();
-        for (Book book: books) {
-            book.setCategory("IT 전문서");
-        }
-        System.out.println("😁".repeat(30));   // SELECT X 3 + UPDATE X 3
-        bookRepository.saveAll(books);
-        bookRepository.findAll().forEach(System.out::println);
-    }
-
-    @Test
-    void nativeQueryTest3(){
-        System.out.println("affected rows : " + bookRepository.updateCategories());
-        System.out.println("😊".repeat(30));
-        System.out.println(bookRepository.findAllCustom1());
-    }
-
-    @Test
-    void nativeQueryTest4() {
-        System.out.println(bookRepository.showTables());
-    }
-
-    // ----------------------------------------
-    // Converter
-    @Test
-    void converterTest1() {
-        bookRepository.findAll().forEach(System.out::println);
-    }
-
-    @Test
-    void converterTest2() {
-        Book book = new Book();
-        book.setName("냥바닥 키보드");
-        book.setStatus(new BookStatus(200));    // 판매중
-
-        // ↓ Converter 에 의해 BookStatus 는 DB interger  로 변환하여 저장된다.
-        bookRepository.save(book);  // INSERT!
-
-        System.out.println(bookRepository.findRowRecord().entrySet());
-    }
-
-    // 개발자가 @Converter 에 DB 로의 작성 부분을 빼먹은 경우는?
-    @Test
-    void converterTest3(){
-        bookRepository.findAll().forEach(System.out::println);
-        bookRepository.findAll().forEach(System.out::println);
-    }
-
-
 }
