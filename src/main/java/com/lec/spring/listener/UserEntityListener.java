@@ -35,11 +35,6 @@ public class UserEntityListener {
         userHistory.setEmail(user.getEmail());
         userHistory.setUser(user);
 
-        // Embedded 된 Address 추가
-//        userHistory.setAddress(user.getAddress());
-        userHistory.setHomeAddress(user.getHomeAddress());
-        userHistory.setCompanyAddress(user.getCompanyAddress());
-
         userHistoryRepository.save(userHistory);    // INSERT
     }
 }

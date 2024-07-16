@@ -1,6 +1,5 @@
 package com.lec.spring.repository;
 
-import com.lec.spring.domain.Address;
 import com.lec.spring.domain.User;
 import com.lec.spring.domain.UserHistory;
 import org.junit.jupiter.api.AfterEach;
@@ -575,50 +574,5 @@ class UserRepositoryTest {
 
         System.out.println("\n------------------------------------------------------------\n");
     }
-    //------------------------------------------------------------------
-    // Embedded 테스트
-    @Test
-    void embededTest1(){
-        User user = new User();
-        user.setName("유인아");
-        user.setHomeAddress(new Address("서울", "구로구", "대림동", "11111"));
-        user.setCompanyAddress(new Address("경기도", "고양시", "고양고양", "23333"));
-        userRepository.save(user);
 
-        userRepository.findAll().forEach(System.out::println);
-
-        System.out.println("👻".repeat(30));
-
-        userHistoryRepository.findAll().forEach(System.out::println);
-    }
-
-    @Test
-    void embededTest2(){
-        User user1 = new User();
-        user1.setName("유인아");
-        user1.setHomeAddress(new Address("서울", "구로구", "대림동", "11111"));
-        user1.setCompanyAddress(new Address("경기도", "고양시", "고양고양", "23333"));
-        userRepository.save(user1);
-
-        User user2 = new User();
-        user2.setName("신현아");
-        user2.setHomeAddress(null);             // Address 가 null 인 경우
-        user2.setCompanyAddress(null);
-        userRepository.save(user2);
-
-        User user3 = new User();
-        user3.setName("홍가연");
-        user3.setHomeAddress(new Address());    // Address 가 empty 인 경우
-        user3.setCompanyAddress(new Address());
-        userRepository.save(user3);
-
-        userRepository.findAll().forEach(System.out::println);
-
-        System.out.println("👻".repeat(30));
-
-        userHistoryRepository.findAll().forEach(System.out::println);
-
-        // DB에 저장된 내용 확인
-        userRepository.findAllRowRecord().forEach(a -> System.out.println(a.entrySet()));   // null
-    }
 }

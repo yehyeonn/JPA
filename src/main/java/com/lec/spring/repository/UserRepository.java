@@ -27,11 +27,17 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // 2.
     User findByEmail(String email);
+
     User getByEmail(String email);
+
     User readByEmail(String email);
+
     User queryByEmail(String email);
+
     User searchByEmail(String email);
+
     User streamByEmail(String email);           // 뭘로 하던지 관계 XXX find와 무엇인지만 들어가면 됨 중간은 상관 X
+
     User findUsersByEmail(String email);        // Ok
 
     // 3. find 아무말... 가능
@@ -42,8 +48,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // 5. First, Top
     List<User> findFirst1ByName(String name);
+
     List<User> findFirst2ByName(String name);
+
     List<User> findTop1ByName(String name);
+
     List<User> findTop2ByName(String name);
 
     // 6.
@@ -52,20 +61,25 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // 7. And, Or
     List<User> findByEmailAndName(String email, String name);
+
     List<User> findByEmailOrName(String email, String name);
 
     // 8. After, Before -> 비교절
     List<User> findByCreatedAtAfter(LocalDateTime dateTime);    // dateTime 이후
+
     List<User> findByIdAfter(Long id);  // 주어진 id 보다 큰 값
+
     List<User> findByNameBefore(String name);  // 주어진 name 보다 작은 값
 
     // 9. GreaterThan, GreaterThanEqual, LessThan, LessThanEqual -> 비교절
     //      >, >=, <, <=
     List<User> findByCreatedAtGreaterThan(LocalDateTime dateTime);
+
     List<User> findByNameGreaterThanEqual(String name);
 
     // 10. Between
     List<User> findByCreatedAtBetween(LocalDateTime dateTime1, LocalDateTime dateTime2);
+
     List<User> findByIdBetween(Long id1, Long id2);
 
     // k BETWEEN a AND b    =>   k >= a AND k <= b
@@ -88,7 +102,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // 13. StartingWith, EndingWith, Contains
     // 문자열에 대한 검색 쿼리, LIKE 사용
     List<User> findByNameStartingWith(String name);
+
     List<User> findByNameEndingWith(String name);
+
     List<User> findByEmailContains(String email);
 
     // 14. Like
@@ -106,6 +122,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // 16. OrderBy => sort
     List<User> findTopByNameOrderByIdDesc(String name);
+
     List<User> findFirstByNameOrderByIdDesc(String name);
 
     // 17. 정렬기준 추가
@@ -118,13 +135,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Page<User> findByName(String name, Pageable pageable);
 
     // 20. Enum 처리
-    @Query(value = "SELECT * FROM t_user LIMIT 1" , nativeQuery = true)
+    @Query(value = "SELECT * FROM t_user LIMIT 1", nativeQuery = true)
     Map<String, Object> findRowRecord();      // Map : 컬럼 이름과 컬럼 value
-
-    // Embed
-    // 두개의 Address 값에 null 이나 empty 가 저장되면 DB 에는 무엇이 저장되어 있을까?
-    @Query(value = "SELECT * FROM t_user", nativeQuery = true)
-    List<Map<String, Object>> findAllRowRecord();
-
-
 }

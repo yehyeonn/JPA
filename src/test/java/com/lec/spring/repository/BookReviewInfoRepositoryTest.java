@@ -68,7 +68,6 @@ class BookReviewInfoRepositoryTest {
         System.out.println("\n------------------------------------------------------------\n");
     }
      */
-
     @Test
     void crudTest3(){
         System.out.println("\n-- TEST#crudTest3() ---------------------------------------------");
@@ -119,6 +118,4 @@ class BookReviewInfoRepositoryTest {
 
         System.out.println(">>> " + bookReviewInfoRepository.findAll());
     }
-
-
 }
