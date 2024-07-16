@@ -42,4 +42,28 @@ public class UserHistory extends BaseEntity /*implements Auditable*/ {
 //    @LastModifiedDate
 //    private LocalDateTime updatedAt;
 
+//    private String city;
+//    private String district;
+//    private String detail;
+//    private String zipCode; // 동일한 코드가 반복해서 작성된다 => 이럴 때 Embedded 사용!
+
+
+    @Embedded // Embeddable 클래스임을 명시
+    @AttributeOverrides({
+            @AttributeOverride(name = "city", column = @Column(name = "home_city")),
+            @AttributeOverride(name = "district", column = @Column(name = "home_distirct")),
+            @AttributeOverride(name = "detail", column = @Column(name = "home_address_detail")),
+            @AttributeOverride(name = "zipCode", column = @Column(name = "home_zip_code")),
+            // 해당 이름을 가진 컬럼의 이름을 home_ 로 변경해 입력(같은 컬럼에 여러 개의 값이 입력됨을 방지)
+    })
+    private Address homeAddress;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "city", column = @Column(name = "company_city")),
+            @AttributeOverride(name = "district", column = @Column(name = "company_distirct")),
+            @AttributeOverride(name = "detail", column = @Column(name = "company_address_detail")),
+            @AttributeOverride(name = "zipCode", column = @Column(name = "company_zip_code")),
+    })
+    private Address companyAddress;
 }
